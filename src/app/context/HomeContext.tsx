@@ -7,11 +7,16 @@ type HomeContextData = {
     volume: number;
     panner: number;
     audioIndex: number;
+    currentTime: number;
+    totalTime: number;
+    muted: boolean;
     configPlayPause: () => void;
     configAudio: () => void;
     configAudioIndex: (index:number) => void;
     configVolume: (valeu: number) => void;
     configPanner: (value: number) => void;
+    configCurrentTime: (value: number) => void;
+    configMuted: () => void;
 }
 
 export const HomeContext = createContext({} as HomeContextData);
@@ -23,6 +28,9 @@ type ProviderProps = {
 const HomeContextProvider = ({children}:ProviderProps) => {
     const [playing, setPlaying] = useState(false);
     const [volume, setVolume] = useState(1);
+    const [currentTime, setCurrentTime] = useState(0);
+    const [muted, setMuted] = useState(false);
+    const [totalTime, setTotalTime] = useState(0);
     const [panner, setPanner] = useState(0);
     const [audioIndex, setAudioIndex] = useState(0);
     const [audio, setAudio] = useState<HTMLAudioElement>();
@@ -34,8 +42,26 @@ const HomeContextProvider = ({children}:ProviderProps) => {
             if (playing) {
                 play();
             }
+
+            audio.onloadedmetadata = () => {
+                setTotalTime(audio.duration);
+            }
+
+            audio.ontimeupdate = () => {
+                setCurrentTime(audio.currentTime);
+            }
+
+            audio.onended = () => {
+                configAudioIndex(audioIndex + 1);
+            }
         }
     }, [audio]);
+
+    const configCurrentTime = (value: number) => {
+        if (!audio) return;
+        audio.currentTime = value;
+        setCurrentTime(value);
+    }
 
     const configAudio = () => {
         configAudioIndex(0);
@@ -68,6 +94,12 @@ const HomeContextProvider = ({children}:ProviderProps) => {
         if (!gain) return;
         gain.gain.value = value;
         setVolume(value);
+    }
+
+    const configMuted = () => {
+        if (!audio) return;
+        audio.muted = !muted;
+        setMuted(!muted);
     }
 
     const configPanner = (value:number) => {
@@ -103,11 +135,16 @@ const HomeContextProvider = ({children}:ProviderProps) => {
                 volume,
                 panner,
                 audioIndex,
+                currentTime,
+                totalTime,
+                muted,
                 configPlayPause,
                 configAudio,
                 configAudioIndex,
                 configVolume,
-                configPanner
+                configPanner,
+                configCurrentTime,
+                configMuted,
             }
         }>
           {children} 

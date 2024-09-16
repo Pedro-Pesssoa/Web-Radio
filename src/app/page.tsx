@@ -1,7 +1,7 @@
 'use client'
 
 import { useContext, useEffect } from "react";
-import {FaPlusCircle, FaMinusCircle, FaPlay, FaPause} from 'react-icons/fa';
+import {FaPlay, FaPause, FaVolumeOff, FaVolumeUp} from 'react-icons/fa';
 import { HomeContext } from "./context/HomeContext";
 import {musics} from "./dados/music";
 
@@ -9,6 +9,9 @@ export default function Home() {
   const {
      playing,
      volume,
+     muted,
+     currentTime,
+     totalTime,
      panner,
      audioIndex,
      configPlayPause,
@@ -16,6 +19,8 @@ export default function Home() {
      configAudioIndex,
      configVolume,
      configPanner,
+     configCurrentTime,
+     configMuted
   } = useContext(HomeContext);
 
   useEffect(()=>{
@@ -27,6 +32,15 @@ export default function Home() {
        <h1>{playing}</h1>
        <h1>{musics[audioIndex].description}</h1>
        <div className="flex flex-row">
+       
+       <button onClick={()=> configMuted()}>
+           {
+            (muted) ? 
+             (<FaVolumeOff className="text-[50px] text-[tomato]" />) : 
+             (<FaVolumeUp />)
+           }
+       </button>
+       
        <button onClick={()=> configPlayPause()}>
            {
             (playing) ? 
@@ -51,6 +65,15 @@ export default function Home() {
                 onChange = {e => configPanner(Number(e.target.value))}
                 step="0.01" 
               ></input>
+
+              <input 
+                type="range"
+                min="0"
+                max={totalTime}
+                value={currentTime}
+                onChange={e => configCurrentTime(Number(e.target.value))}
+              />
+
            </div>
            <div>
               {
