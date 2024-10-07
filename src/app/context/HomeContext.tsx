@@ -69,7 +69,6 @@ const HomeContextProvider = ({children}:ProviderProps) => {
 
     const configAudioIndex = (index: number) => {
         const newAudioIndex = index % 3;
-        alert(newAudioIndex);
         const updatedAudio = new Audio(`audios/audio${newAudioIndex + 1}.mp3`);
         pause();
         setAudioIndex(newAudioIndex);

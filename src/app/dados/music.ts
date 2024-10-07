@@ -8,23 +8,23 @@ type Music = {
 
 export const musics: Music[] = [
     {
-        name: "musica 01",
-        author: "ruan plabblo",
-        description: "musica 01",
+        name: "Especialz",
+        author: "Miura Jam",
+        description: "Jujutsu Kaisen Season 2 Opening",
         urlAudio: "audios/audio1.mp3",
         image: "imagens/image01.jpg"
     },
     {
-        name: "musica 02",
-        author: "joao felepe",
-        description: "musica 02",
+        name: "Otonoke",
+        author: "Creepy Nuts",
+        description: "DAN DA DAN Opening",
         urlAudio: "audios/audio2.mp3",
         image: "imagens/image02.jpg"
     },
     {
-        name: "musica 03",
-        author: "Antonio Caue",
-        description: "musica 03",
+        name: "Blue bird",
+        author: "Yoshiki Mizuno",
+        description: "Naruto Shippuden Opening 3",
         urlAudio: "audios/audio3.mp3",
         image: "imagens/image03.jpg"
     }
